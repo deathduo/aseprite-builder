@@ -108,7 +108,8 @@ jobs:
             -DENABLE_CCACHE=$enable_ccache \
             -DLAF_BACKEND=$laf_backend \
             -DSKIA_DIR=$(realpath skia) \
-            -DSKIA_LIBRARY_DIR=$(realpath skia/out/Release-$skia_arch)
+            -DSKIA_LIBRARY_DIR=$(realpath skia/out/Release-$skia_arch) \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       - name: Compiling
         shell: bash
         working-directory: aseprite
