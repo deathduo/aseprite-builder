@@ -1,0 +1,35 @@
+name: Build with Updated CMake
+
+on:
+  push:
+    branches:
+      - main  # 你可以根据需要修改分支名称
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 可以根据需要选择其他操作系统，如 macOS-latest 或 windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install CMake
+        run: |
+          # 移除旧版本的 CMake
+          sudo apt-get remove cmake
+          # 添加 Kitware 的 APT 源
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null
+          sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+          sudo apt-get update
+          # 安装最新版本的 CMake
+          sudo apt-get install cmake
+
+      - name: Check CMake version
+        run: cmake --version
+
+      - name: Configure and build
+        run: |
+          mkdir build
+          cd build
+          cmake ..
+          make
